@@ -1,0 +1,28 @@
+{
+  "name": "roomatesPrototype",
+  "authors": [
+    "orzorc <qiucheng48@gmail.com>"
+  ],
+  "description": "the prototype of roomates that makes with Polymer",
+  "main": "",
+  "moduleType": [],
+  "keywords": [
+    "roomates",
+    "polymer"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "paper-elements": "~1.0.6",
+    "polymer": "~1.2.3",
+    "iron-elements": "~1.0.6"
+  }
+}

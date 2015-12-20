@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta charset="UTF-8">
+    <link href="bower_components/polymer/polymer.html" rel="import"/>
+    <link href="bower_components/paper-header-panel/paper-header-panel.html" rel="import"/>
+    <link href="bower_components/paper-drawer-panel/paper-drawer-panel.html" rel="import"/>
+    <link href="bower_components/paper-scroll-header-panel/paper-scroll-header-panel.html" rel="import"/>
+    <link href="bower_components/paper-toolbar/paper-toolbar.html" rel="import"/>
+    <link href="bower_components/paper-icon-button/paper-icon-button.html" rel="import"/>
+    <link href="bower_components/iron-icons/iron-icons.html" rel="import" async/>
+    <link href="bower_components/paper-menu/paper-menu.html" rel="import" async/>
+    <link href="bower_components/paper-item/paper-item.html" rel="import"/>
+    <link href="bower_components/iron-icons/maps-icons.html" rel="import" async/>
+    <link href="bower_components/iron-icons/notification-icons.html" rel="import" async/>
+
+    <link href="components/section-pages/section-bedroom.html" rel="import" async/>
+    <link href="components/list-menu/list-menu.html" rel="import" async/>
+    <title>Roomates Prototype</title>
+    <style>
+        body{
+            margin: 0;
+            background-color: ghostwhite;
+        }
+        paper-scroll-header-panel:unresolved{
+            display: block;
+            height: 56px;
+            width: 100%;
+            background-color: #3f51b5;
+        }
+        paper-scroll-header-panel:unresolved .title{
+            margin-left: 59px;
+            color: white;
+        }
+        paper-header-panel:unresolved{
+            display: none;
+        }
+    </style>
+
+    <dom-module id="roomates-prototype">
+        <style>
+            :root {
+                --dark-primary-color:       #1976D2;
+                --default-primary-color:    #2196F3;
+                --light-primary-color:      #BBDEFB;
+                --text-primary-color:       #FFFFFF;
+                --accent-color:             #FF5252;
+                --primary-background-color: #BBDEFB;
+                --primary-text-color:       #212121;
+                --secondary-text-color:     #727272;
+                --disabled-text-color:      #BDBDBD;
+                --divider-color:            #B6B6B6;
+
+
+                /* Components */
+
+                /* paper-drawer-panel */
+                --drawer-menu-color:           #ffffff;
+                --drawer-border-color:         1px solid #ccc;
+                --drawer-toolbar-border-color: 1px solid rgba(0, 0, 0, 0.22);
+
+                /* paper-menu */
+                --paper-menu-background-color: #fff;
+                --menu-link-color:             #111111;
+
+                /* paper-input */
+                --paper-input-container-color:       rgba(255, 255, 255, 0.64);
+                --paper-input-container-focus-color: rgba(255, 255, 255, 1);
+                --paper-input-container-input-color: #fff;
+            }
+            #mainHead {
+                --paper-toolbar-background: var(--dark-primary-color);
+            }
+            paper-scroll-header-panel{
+                @apply(--layout-fit);
+                @apply(--layout-vertical);
+            }
+        </style>
+        <template>
+            <paper-drawer-panel id="layout">
+                <paper-header-panel drawer>
+                    <paper-toolbar id="drawerHead">
+                        <div class="title">Roomates</div>
+                    </paper-toolbar>
+                    <list-menu id="menu"></list-menu>
+                </paper-header-panel>
+                <paper-header-panel main>
+                    <paper-toolbar id="mainHead">
+                        <paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
+                        <div class="title" id="currentTitle"></div>
+                        <paper-icon-button icon="more-vert"></paper-icon-button>
+                    </paper-toolbar>
+                    <section-bedroom></section-bedroom>
+                </paper-header-panel>
+            </paper-drawer-panel>
+        </template>
+        <script>
+            Polymer({
+                is: 'roomates-prototype',
+                ready: function(){
+                    var that = this;
+                    this.addEventListener('route-change',function(e){
+                        this.$.currentTitle.innerHTML = e.detail.info.value;
+                    });
+                }
+            });
+        </script>
+    </dom-module>
+</head>
+<body class="fullbleed">
+    <roomates-prototype></roomates-prototype>
+</body>
+<script src="js/app.js"></script>
+</html>

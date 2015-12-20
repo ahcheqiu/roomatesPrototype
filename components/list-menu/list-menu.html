@@ -1,0 +1,148 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html"/>
+<link rel="import" href="../../bower_components/paper-menu/paper-menu.html"/>
+<link rel="import" href="../../bower_components/paper-item/paper-item.html"/>
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html"/>
+
+<!--
+An element that fetch a config file and display as an menu.
+You need import any icons you need manually.
+
+Example:
+
+    <list-menu config="[array]"></list-menu>
+
+Example:
+
+    <list-menu config-url="/path/to/file"></list-menu>
+    
+@demo demo/index.html
+@hero hero.svg
+-->
+
+<dom-module id="list-menu">
+    <style>
+        paper-menu paper-item{
+            cursor: pointer;
+        }
+        paper-menu iron-icon{
+            padding-right: 3px;
+        }
+    </style>
+    <template>
+        <iron-ajax id="configAjax" last-response="[[config]]"></iron-ajax>
+        <paper-menu id="menu" attr-for-selected="route">
+            <template is="dom-repeat" items="[[config]]">
+                <paper-item route$="[[item.route]]" config-index="[[index]]">
+                    <iron-icon icon="[[item.icon]]"></iron-icon><span>[[item.value]]</span>
+                </paper-item>
+            </template>
+        </paper-menu>
+    </template>
+    <script>
+        Polymer({
+            is: 'list-menu',
+            properties: {
+                /**
+                 * 是否需要在component准备好了以后去自动获取配置文件(只会在配置了configUrl以后生效)
+                 */
+                auto:{
+                    type: Boolean,
+                    value: false
+                },
+
+                /**
+                 * 配置的内容
+                 */
+                config: {
+                    type:Object,
+                    observer: '_onConfigChange'
+                },
+
+                /**
+                 * 配置文件的路径，设置了该参数将会在调用获取配置以后自动覆盖config属性的数据
+                 */
+                configUrl: String,
+
+                /**
+                 * 当前路由
+                 */
+                currentRoute: String,
+
+                /**
+                 * 目标路由
+                 */
+                targetRoute: String,
+
+                /**
+                 * window的timeout标记
+                 */
+                signalTimeout: Number
+            },
+            ready: function () {
+                var that = this;
+                this.addEventListener('iron-select',function(e){
+                    e.stopPropagation();
+                    that.targetRoute = this.$.menu.selectedItem.getAttribute('route');
+                    that._fireSignal();
+                });
+                this.addEventListener('iron-activate',function(e){
+                    e.stopPropagation();
+                    if( this.$.menu.focusedItem != undefined ){
+                        that.targetRoute = this.$.menu.focusedItem.getAttribute('route');
+                        that._fireSignal();
+                    }
+                });
+            },
+            attached: function () {
+                this.config = [
+                    {value:"卧室",icon:"maps:local-hotel",route:"bedroom"},
+                    {value:"客厅",icon:"notification:airline-seat-recline-normal",route:"livingroom"},
+                    {value:"厨房",icon:"maps:local-dining",route:"kitchen"}
+                ];
+            },
+            detached: function () {
+            },
+
+            /**
+             * 该事件会在路由发生变化时产生，但是会有200ms的延迟，如果在延迟的时间内再次改变路由，
+             * 后面的更改将会替代之前的更改
+             *
+             * @event route-change
+             */
+
+            /**
+             * 产生一个route-change事件，调用这个函数200ms只会产生一个这个事件.
+             * 可以手动调用clearTimeout(this.signalTimeout)来取消这次事件
+             *
+             * @private
+             */
+            _fireSignal: function(){
+                var that = this;
+                if( that.signalTimeout == null ){
+                    that.signalTimeout = setTimeout(function(){
+                        window.clearTimeout(that.signalTimeout);
+                        that.signalTimeout = null;
+                        that.fire('route-change',{
+                            target: that.targetRoute,
+                            current: that.currentRoute,
+                            info: that.config[that.$.menu.selectedItem.configIndex]
+                        });
+                        that.currentRoute = that.targetRoute;
+                    },200);
+                }
+            },
+
+            _onConfigChange: function(){
+            },
+
+            /**
+             * 改变路由
+             * @param {String} target 需要改变的路由
+             */
+            changeRouteTo: function(target){console.log(target);
+                this.$.menu.select(target);
+            }
+        });
+    </script>
+</dom-module>

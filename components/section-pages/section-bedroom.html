@@ -1,0 +1,43 @@
+<link href="../../bower_components/polymer/polymer.html" rel="import">
+<link href="../../bower_components/iron-list/iron-list.html" rel="import"/>
+<link href="../../bower_components/paper-card/paper-card.html" rel="import"/>
+<link href="../../bower_components/paper-button/paper-button.html" rel="import" async/>
+
+<dom-module id="section-bedroom">
+    <style is="custom-style">
+        :host {
+            width: 100%;
+        }
+        iron-list{
+            height: 100%;
+        }
+        paper-card {
+            padding-bottom: 10px;
+        }
+    </style>
+    <template>
+        <iron-list items="{{data}}" as="item">
+            <template>
+                <paper-card heading="[[item.name]]">
+                    <div class="card-content">[[item.value]]</div>
+                </paper-card>
+            </template>
+        </iron-list>
+    </template>
+    <script>
+        Polymer({
+            is: 'section-bedroom',
+            properties: {},
+            ready: function(){
+                var data = [];
+                for( var x = 0 ; x< 100 ; x++ ){
+                    data.push({
+                        'name':'Test'+(x+1),
+                        'value':'test'+(x+1)
+                    });
+                }
+                this.data = data;
+            }
+        });
+    </script>
+</dom-module>
