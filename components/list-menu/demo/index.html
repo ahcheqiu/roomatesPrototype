@@ -9,40 +9,43 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 <html>
-  <head>
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
-    <title>seed-element Demo</title>
-    <script src="../../webcomponentsjs/webcomponents-lite.min.js"></script>
+    <title>list-menu Demo</title>
+    <script src="../../../bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
     <link rel="import" href="../list-menu.html">
-  </head>
-  <body unresolved>
+</head>
+<body unresolved>
 
-    <p>An example of <code>&lt;seed-element&gt;</code>:</p>
+<list-menu></list-menu>
+<input type="text" title="router"/><button onclick="_changeSelected();">change selected</button>
+<h4>当前URL:</h4>
+<p id="currentUrl"></p>
 
-    <p>Make words! <button id="saybtn">Say Something</button></p>
-    <p>Make lasers! <button id="laserbtn">Fire lasers</button></p>
+<script>
+    var myEl = document.querySelector('list-menu');
+    var baseLocation = window.location.protocol + '//' + location.host + window.location.pathname;
+    var currentUrl = document.querySelector('#currentUrl');
+    currentUrl.innerHTML = baseLocation;
 
-    <seed-element author='{"name": "Lord Meowser", "image": "http://lorempixel.com/g/300/200/cats/"}' fancy>
-      <h2>Hello seed-element</h2>
-    </seed-element>
+    var _changeSelected = function(){
+        myEl.changeRouteTo(document.querySelector('input').value);
+    };
 
-    <script>
-      var seedElement = document.querySelector('seed-element');
+    myEl.config = [
+        {value:"卧室",icon:"maps:local-hotel",route:"bedroom"},
+        {value:"客厅",icon:"notification:airline-seat-recline-normal",route:"livingroom"},
+        {value:"厨房",icon:"maps:local-dining",route:"kitchen"}
+    ];
 
-      document.querySelector('#saybtn').addEventListener('click', function() {
-        alert(seedElement.sayHello('Hallo!'));
-      });
+    document.addEventListener('route-change',function(e){
+        var info = e.detail;
+        currentUrl.innerHTML = baseLocation + '#!' + info.target;
+        window.location = currentUrl.innerHTML;
+    });
 
-      document.querySelector('#laserbtn').addEventListener('click', function() {
-        seedElement.fireLasers();
-      });
+</script>
 
-      document.addEventListener("seed-element-lasers", function(e) {
-        console.log(e.detail.sound);
-      });
-
-    </script>
-
-  </body>
+</body>
 </html>

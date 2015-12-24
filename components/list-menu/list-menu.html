@@ -5,8 +5,8 @@
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html"/>
 
 <!--
-An element that fetch a config file and display as an menu.
-You need import any icons you need manually.
+一个可以从指定地址获取配置,并显示为菜单.
+配置中配置的icon需要自己导入相应的组件.
 
 Example:
 
@@ -53,9 +53,17 @@ Example:
 
                 /**
                  * 配置的内容
+                 * 这个Array的应该类似于这样:
+                 *
+                 * [
+                 *    {value:"卧室",icon:"maps:local-hotel",route:"bedroom"},
+                 *    {value:"客厅",icon:"notification:airline-seat-recline-normal",route:"livingroom"},
+                 *    ...
+                 * ]
+                 *
                  */
                 config: {
-                    type:Object,
+                    type:Array,
                     observer: '_onConfigChange'
                 },
 
@@ -140,7 +148,7 @@ Example:
              * 改变路由
              * @param {String} target 需要改变的路由
              */
-            changeRouteTo: function(target){console.log(target);
+            changeRouteTo: function(target){
                 this.$.menu.select(target);
             }
         });

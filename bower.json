@@ -23,6 +23,7 @@
   "devDependencies": {
     "paper-elements": "~1.0.6",
     "polymer": "~1.2.3",
-    "iron-elements": "~1.0.6"
+    "iron-elements": "~1.0.6",
+    "web-component-tester": "~4.0.3"
   }
 }
