@@ -104,6 +104,9 @@
                     var that = this;
                     this.addEventListener('route-change',function(e){
                         this.$.currentTitle.innerHTML = e.detail.info.value;
+                        if(this.$.layout.narrow){
+                            this.$.layout.closeDrawer();
+                        }
                     });
                 }
             });
