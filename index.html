@@ -103,9 +103,12 @@
                 ready: function(){
                     var that = this;
                     this.addEventListener('route-change',function(e){
-                        this.$.currentTitle.innerHTML = e.detail.info.value;
-                        if(this.$.layout.narrow){
-                            this.$.layout.closeDrawer();
+                        that.$.currentTitle.innerHTML = e.detail.info.value;
+                        var info = e.detail;
+                        window.location =
+                            window.location.protocol + '//' + location.host + window.location.pathname + '#!' + info.target;
+                        if(that.$.layout.narrow){
+                            that.$.layout.closeDrawer();
                         }
                     });
                 }
